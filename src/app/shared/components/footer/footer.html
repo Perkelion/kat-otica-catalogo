@@ -1,0 +1,21 @@
+<footer class="footer">
+  <div class="container footer__grid">
+    <div>
+      <strong>Kat Ótica</strong>
+      <p>Armações, lentes e acessórios para você enxergar bem e com estilo.</p>
+    </div>
+    <div>
+      <strong>Contato</strong>
+      <p>{{ contato.telefone }}</p>
+      <p>{{ contato.email }}</p>
+      <p>{{ contato.endereco }}</p>
+    </div>
+    <div>
+      <strong>Links</strong>
+      <p><a routerLink="/catalogo">Catálogo</a></p>
+      <p><a [href]="contato.instagram" target="_blank" rel="noopener">Instagram</a></p>
+      <p><a routerLink="/admin">Área da ótica</a></p>
+    </div>
+  </div>
+  <p class="footer__copy">© {{ ano }} Kat Ótica. Todos os direitos reservados.</p>
+</footer>

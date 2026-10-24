@@ -1,0 +1,24 @@
+<header class="header">
+  <div class="container header__conteudo">
+    <a routerLink="/" class="header__logo">Kat <span>Ótica</span></a>
+
+    <button
+      class="header__menu-btn"
+      type="button"
+      aria-label="Abrir menu"
+      [attr.aria-expanded]="menuAberto()"
+      (click)="alternarMenu()"
+    >
+      ☰
+    </button>
+
+    <nav class="header__nav" [class.aberto]="menuAberto()" (click)="menuAberto.set(false)">
+      <a routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }"
+        >Início</a
+      >
+      <a routerLink="/catalogo" routerLinkActive="ativo">Catálogo</a>
+      <a routerLink="/sobre" routerLinkActive="ativo">Sobre</a>
+      <a routerLink="/contato" routerLinkActive="ativo">Contato</a>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,25 @@
+<div class="container secao">
+  <h1>Contato</h1>
+  <div class="contatos">
+    <div class="contato">
+      <strong>WhatsApp</strong>
+      <a [href]="linkWhatsapp" target="_blank" rel="noopener">Enviar mensagem</a>
+    </div>
+    <div class="contato">
+      <strong>Telefone</strong>
+      <span>{{ contato.telefone }}</span>
+    </div>
+    <div class="contato">
+      <strong>E-mail</strong>
+      <a [href]="'mailto:' + contato.email">{{ contato.email }}</a>
+    </div>
+    <div class="contato">
+      <strong>Endereço</strong>
+      <span>{{ contato.endereco }}</span>
+    </div>
+    <div class="contato">
+      <strong>Instagram</strong>
+      <a [href]="contato.instagram" target="_blank" rel="noopener">Seguir</a>
+    </div>
+  </div>
+</div>

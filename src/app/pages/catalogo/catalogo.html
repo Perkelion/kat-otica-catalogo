@@ -1,0 +1,30 @@
+<div class="container secao">
+  <h1>Catálogo</h1>
+
+  <div class="catalogo">
+    <app-filtros
+      [categorias]="categorias()"
+      [categoriaSelecionada]="categoria()"
+      [buscaInicial]="busca()"
+      (filtrosChange)="filtros.set($event)"
+      (categoriaChange)="selecionarCategoria($event)"
+    />
+
+    <section>
+      @if (carregando()) {
+        <p class="vazio">Carregando produtos...</p>
+      } @else if (erro()) {
+        <p class="vazio erro">{{ erro() }}</p>
+      } @else {
+        <p class="resultado">{{ produtos().length }} produto(s) encontrado(s)</p>
+        <div class="grid-produtos">
+          @for (p of produtos(); track p.id) {
+            <app-produto-card [produto]="p" />
+          } @empty {
+            <p class="vazio">Nenhum produto encontrado com os filtros selecionados.</p>
+          }
+        </div>
+      }
+    </section>
+  </div>
+</div>

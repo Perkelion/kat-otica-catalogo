@@ -1,0 +1,17 @@
+.catalogo {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.resultado {
+  margin-top: 0;
+  color: var(--cor-texto-suave);
+}
+
+@media (max-width: 768px) {
+  .catalogo {
+    grid-template-columns: 1fr;
+  }
+}

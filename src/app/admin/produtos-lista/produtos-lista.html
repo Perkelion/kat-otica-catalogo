@@ -1,0 +1,65 @@
+<div class="topo">
+  <h1>Produtos</h1>
+  <a routerLink="/admin/produtos/novo" class="btn">+ Novo produto</a>
+</div>
+
+<form class="busca" (submit)="$event.preventDefault(); carregar()">
+  <input
+    type="search"
+    placeholder="Buscar por nome, marca..."
+    [value]="busca()"
+    (input)="busca.set($any($event.target).value)"
+  />
+  <button type="submit" class="btn btn--secundario">Buscar</button>
+</form>
+
+@if (carregando()) {
+  <p class="vazio">Carregando...</p>
+} @else if (erro()) {
+  <p class="vazio erro">{{ erro() }}</p>
+} @else {
+  <div class="tabela-wrapper">
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Nome</th>
+          <th>Categoria</th>
+          <th>Preço</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of produtos(); track p.id) {
+          <tr>
+            <td>
+              @if (p.imagens.length) {
+                <img [src]="p.imagens[0]" [alt]="p.nome" class="miniatura" />
+              }
+            </td>
+            <td>
+              <strong>{{ p.nome }}</strong>
+              @if (p.destaque) {
+                <span class="tag">Destaque</span>
+              }
+              <br />
+              <small>{{ p.marca }}</small>
+            </td>
+            <td>{{ p.categoria?.nome ?? '-' }}</td>
+            <td>{{ p.preco !== null ? (p.preco | currency: 'BRL') : '-' }}</td>
+            <td>{{ p.ativo ? 'Ativo' : 'Inativo' }}</td>
+            <td class="acoes">
+              <a [routerLink]="['/admin/produtos', p.id, 'editar']">Editar</a>
+              <button type="button" class="link-perigo" (click)="remover(p)">Remover</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="vazio">Nenhum produto cadastrado.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

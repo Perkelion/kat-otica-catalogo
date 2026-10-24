@@ -1,0 +1,33 @@
+<section class="hero">
+  <div class="container">
+    <h1>Enxergue o mundo com estilo</h1>
+    <p>Conheça as armações e produtos da Kat Ótica antes mesmo de visitar a loja.</p>
+    <a routerLink="/catalogo" class="btn">Ver catálogo</a>
+  </div>
+</section>
+
+@if (categorias().length) {
+  <section class="container secao">
+    <h2>Categorias</h2>
+    <div class="categorias">
+      @for (c of categorias(); track c.id) {
+        <a [routerLink]="['/catalogo']" [queryParams]="{ categoria: c.slug }" class="categoria">
+          {{ c.nome }}
+        </a>
+      }
+    </div>
+  </section>
+}
+
+<section class="container secao">
+  <h2>Destaques</h2>
+  @if (destaques().length) {
+    <div class="grid-produtos">
+      @for (p of destaques(); track p.id) {
+        <app-produto-card [produto]="p" />
+      }
+    </div>
+  } @else {
+    <p class="vazio">Em breve novos produtos em destaque.</p>
+  }
+</section>

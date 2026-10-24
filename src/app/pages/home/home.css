@@ -1,0 +1,42 @@
+.hero {
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-escura));
+  color: #fff;
+  padding: 5rem 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  margin: 0 0 1rem;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.hero .btn {
+  background: #fff;
+  color: var(--cor-primaria);
+}
+
+.categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.categoria {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 999px;
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  text-decoration: none;
+}
+
+.categoria:hover {
+  border-color: var(--cor-primaria);
+  color: var(--cor-primaria);
+}

@@ -1,0 +1,58 @@
+<aside class="filtros">
+  <label>
+    Buscar
+    <input
+      type="search"
+      placeholder="Nome, marca..."
+      [value]="buscaInicial() ?? ''"
+      (input)="atualizar('busca', $event)"
+    />
+  </label>
+
+  <label>
+    Categoria
+    <select (change)="selecionarCategoria($event)">
+      <option value="">Todas</option>
+      @for (c of categorias(); track c.id) {
+        <option [value]="c.slug" [selected]="c.slug === categoriaSelecionada()">
+          {{ c.nome }}
+        </option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Gênero
+    <select (change)="atualizar('genero', $event)">
+      <option value="">Todos</option>
+      @for (g of generos; track g.valor) {
+        <option [value]="g.valor">{{ g.rotulo }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Material
+    <select (change)="atualizar('material', $event)">
+      <option value="">Todos</option>
+      @for (m of materiais; track m) {
+        <option [value]="m">{{ m }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Formato
+    <select (change)="atualizar('formato', $event)">
+      <option value="">Todos</option>
+      @for (f of formatos; track f) {
+        <option [value]="f">{{ f }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Marca
+    <input type="text" placeholder="Ex.: Ray-Ban" (input)="atualizar('marca', $event)" />
+  </label>
+</aside>

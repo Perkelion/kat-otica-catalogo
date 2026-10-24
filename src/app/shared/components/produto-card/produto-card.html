@@ -1,0 +1,22 @@
+@let p = produto();
+<a class="card" [routerLink]="['/produto', p.id]">
+  <div class="card__imagem">
+    @if (p.imagens.length) {
+      <img [src]="p.imagens[0]" [alt]="p.nome" loading="lazy" />
+    } @else {
+      <span>Sem imagem</span>
+    }
+  </div>
+  <div class="card__info">
+    @if (p.categoria) {
+      <small>{{ p.categoria.nome }}</small>
+    }
+    <h3>{{ p.nome }}</h3>
+    @if (p.marca) {
+      <p>{{ p.marca }}</p>
+    }
+    @if (p.preco !== null) {
+      <strong>{{ p.preco | currency: 'BRL' }}</strong>
+    }
+  </div>
+</a>

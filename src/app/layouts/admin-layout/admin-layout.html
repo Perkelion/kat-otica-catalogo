@@ -1,0 +1,13 @@
+<header class="admin-header">
+  <div class="container admin-header__conteudo">
+    <strong>Kat Ótica · Gerenciamento</strong>
+    <nav>
+      <a routerLink="/admin/produtos" routerLinkActive="ativo">Produtos</a>
+      <a routerLink="/" target="_blank">Ver site</a>
+      <button type="button" class="btn btn--secundario" (click)="sair()">Sair</button>
+    </nav>
+  </div>
+</header>
+<main class="container admin-conteudo">
+  <router-outlet />
+</main>

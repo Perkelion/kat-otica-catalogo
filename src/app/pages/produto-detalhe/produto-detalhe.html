@@ -1,0 +1,74 @@
+<div class="container secao">
+  <a routerLink="/catalogo" class="voltar">← Voltar ao catálogo</a>
+
+  @if (carregando()) {
+    <p class="vazio">Carregando...</p>
+  } @else if (produto(); as p) {
+    <div class="detalhe">
+      <div class="galeria">
+        <div class="galeria__principal">
+          @if (p.imagens.length) {
+            <img [src]="p.imagens[imagemAtual()]" [alt]="p.nome" />
+          } @else {
+            <span>Sem imagem</span>
+          }
+        </div>
+        @if (p.imagens.length > 1) {
+          <div class="galeria__miniaturas">
+            @for (img of p.imagens; track img; let i = $index) {
+              <button
+                type="button"
+                [class.ativa]="i === imagemAtual()"
+                (click)="imagemAtual.set(i)"
+              >
+                <img [src]="img" [alt]="p.nome + ' - imagem ' + (i + 1)" />
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="info">
+        @if (p.categoria) {
+          <small>{{ p.categoria.nome }}</small>
+        }
+        <h1>{{ p.nome }}</h1>
+        @if (p.preco !== null) {
+          <p class="preco">{{ p.preco | currency: 'BRL' }}</p>
+        }
+        @if (p.descricao) {
+          <p>{{ p.descricao }}</p>
+        }
+
+        <dl class="caracteristicas">
+          @if (p.marca) {
+            <dt>Marca</dt>
+            <dd>{{ p.marca }}</dd>
+          }
+          @if (p.genero) {
+            <dt>Gênero</dt>
+            <dd class="capitalizar">{{ p.genero }}</dd>
+          }
+          @if (p.material) {
+            <dt>Material</dt>
+            <dd>{{ p.material }}</dd>
+          }
+          @if (p.formato) {
+            <dt>Formato</dt>
+            <dd>{{ p.formato }}</dd>
+          }
+          @if (p.cor) {
+            <dt>Cor</dt>
+            <dd>{{ p.cor }}</dd>
+          }
+        </dl>
+
+        <a class="btn" [href]="linkWhatsapp()" target="_blank" rel="noopener">
+          Tenho interesse (WhatsApp)
+        </a>
+      </div>
+    </div>
+  } @else {
+    <p class="vazio">Produto não encontrado.</p>
+  }
+</div>

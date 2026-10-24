@@ -1,0 +1,96 @@
+.voltar {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.detalhe {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+
+.galeria__principal {
+  aspect-ratio: 4 / 3;
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.galeria__principal img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.galeria__miniaturas {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  overflow-x: auto;
+}
+
+.galeria__miniaturas button {
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  border: 2px solid var(--cor-borda);
+  border-radius: 8px;
+  background: var(--cor-superficie);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.galeria__miniaturas button.ativa {
+  border-color: var(--cor-primaria);
+}
+
+.galeria__miniaturas img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.info small {
+  color: var(--cor-primaria);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.info h1 {
+  margin: 0.25rem 0 0.5rem;
+}
+
+.preco {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--cor-primaria);
+}
+
+.caracteristicas {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1.5rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.caracteristicas dt {
+  font-weight: 600;
+}
+
+.caracteristicas dd {
+  margin: 0;
+  color: var(--cor-texto-suave);
+}
+
+.capitalizar {
+  text-transform: capitalize;
+}
+
+@media (max-width: 768px) {
+  .detalhe {
+    grid-template-columns: 1fr;
+  }
+}
