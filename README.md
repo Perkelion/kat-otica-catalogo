@@ -15,7 +15,7 @@ Catálogo virtual da Kat Ótica, desenvolvido com **Angular** e **Supabase** (ba
 
 ```
 src/
-├── environments/          # URL/chave do Supabase e dados de contato da ótica
+├── environments/          # environment.example.ts: modelo com URL/chave do Supabase e contatos da ótica
 └── app/
     ├── core/
     │   ├── models/        # Interfaces: Produto, Categoria, filtros
@@ -34,9 +34,17 @@ supabase/
 1. Crie um projeto em <https://supabase.com>.
 2. Em **SQL Editor**, execute o conteúdo de `supabase/schema.sql`.
 3. Em **Authentication → Users**, crie o usuário (e-mail e senha) que a ótica usará para entrar no `/admin`.
-4. Em **Project Settings → API**, copie a *Project URL* e a *anon public key* para
-   `src/environments/environment.ts` e `src/environments/environment.development.ts`.
-5. Nos mesmos arquivos, preencha WhatsApp, telefone, e-mail, endereço e Instagram da ótica.
+4. Crie os arquivos de configuração a partir do modelo (eles não são versionados):
+
+   ```bash
+   cp src/environments/environment.example.ts src/environments/environment.ts
+   cp src/environments/environment.example.ts src/environments/environment.development.ts
+   ```
+
+   Em `environment.development.ts`, troque `production: true` por `production: false`.
+5. Em **Project Settings → API**, copie a *Project URL* e a *anon public key* para os dois arquivos.
+   Nunca use a chave `service_role` aqui: estes valores vão para o navegador.
+6. Nos mesmos arquivos, preencha WhatsApp, telefone, e-mail, endereço e Instagram da ótica.
 
 ## Comandos
 
