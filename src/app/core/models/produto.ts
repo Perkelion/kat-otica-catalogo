@@ -1,34 +1,55 @@
 import { Categoria } from './categoria';
+import { Marca } from './marca';
 
-export type Genero = 'masculino' | 'feminino' | 'unissex' | 'infantil';
+export interface ImagemProduto {
+  id: string;
+  produto_id: string;
+  url: string;
+  ordem: number;
+  created_at: string;
+}
+
+export interface CaracteristicaProduto {
+  id: string;
+  produto_id: string;
+  nome: string;
+  valor: string;
+  created_at: string;
+}
 
 export interface Produto {
   id: string;
   nome: string;
   descricao: string | null;
-  marca: string | null;
-  categoria_id: number | null;
-  categoria?: Categoria | null;
   preco: number | null;
-  genero: Genero | null;
-  material: string | null;
-  formato: string | null;
-  cor: string | null;
-  imagens: string[];
+  estoque: number;
   destaque: boolean;
-  ativo: boolean;
-  criado_em: string;
+  categoria_id: string | null;
+  marca_id: string | null;
+  created_at: string;
+  categoria?: Categoria | null;
+  marca?: Marca | null;
+  imagens: ImagemProduto[];
+  caracteristicas: CaracteristicaProduto[];
 }
 
-export type ProdutoInput = Omit<Produto, 'id' | 'criado_em' | 'categoria'>;
+// campos que vão pro supabase quando for criado um produto
+export type ProdutoInput = Pick<
+  Produto,
+  'nome' | 'descricao' | 'preco' | 'estoque' | 'destaque' | 'categoria_id' | 'marca_id'
+>;
+
+// produto com as imagens e características
+export interface ProdutoCompletoInput {
+  produto: ProdutoInput;
+  imagens: string[];
+  caracteristicas: { nome: string; valor: string }[];
+}
 
 export interface FiltrosProduto {
   busca?: string;
-  categoriaSlug?: string;
-  marca?: string;
-  genero?: Genero | '';
-  material?: string;
-  formato?: string;
+  categoriaId?: string;
+  marcaId?: string;
+  cor?: string;
   somenteDestaques?: boolean;
-  incluirInativos?: boolean;
 }
