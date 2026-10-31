@@ -1,0 +1,44 @@
+.nova {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  overflow: hidden;
+}
+
+.lista li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: var(--espaco-3) var(--espaco-4);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.lista li:last-child {
+  border-bottom: none;
+}
+
+.lista img {
+  width: 64px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.lista strong {
+  flex: 1;
+  font-weight: 600;
+}

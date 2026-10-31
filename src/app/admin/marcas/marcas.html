@@ -1,0 +1,40 @@
+<h1>Marcas</h1>
+
+<form class="nova" [formGroup]="form" (ngSubmit)="adicionar(campoLogo)">
+  <label class="campo">
+    Nome *
+    <input type="text" maxlength="100" formControlName="nome" />
+  </label>
+  <label class="campo">
+    Logo
+    <input #campoLogo type="file" accept="image/*" (change)="selecionarLogo($event)" />
+  </label>
+  <button type="submit" class="btn" [disabled]="salvando()">
+    {{ salvando() ? 'Salvando...' : '+ Adicionar' }}
+  </button>
+</form>
+
+@if (form.controls.nome.touched && form.controls.nome.invalid) {
+  <p class="erro">Informe o nome da marca (até 100 caracteres).</p>
+}
+@if (erro()) {
+  <p class="erro">{{ erro() }}</p>
+}
+
+@if (carregando()) {
+  <p class="vazio">Carregando...</p>
+} @else {
+  <ul class="lista">
+    @for (m of marcas(); track m.id) {
+      <li>
+        @if (m.logo_url) {
+          <img [src]="m.logo_url" [alt]="m.nome" />
+        }
+        <strong>{{ m.nome }}</strong>
+        <button type="button" class="link-perigo" (click)="remover(m)">Remover</button>
+      </li>
+    } @empty {
+      <li class="vazio">Nenhuma marca cadastrada.</li>
+    }
+  </ul>
+}
