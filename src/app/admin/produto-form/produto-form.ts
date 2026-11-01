@@ -2,9 +2,19 @@ import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Categoria } from '../../core/models/categoria';
-import { Genero, ProdutoInput } from '../../core/models/produto';
+import { Marca } from '../../core/models/marca';
+import { ProdutoInput } from '../../core/models/produto';
 import { CategoriaService } from '../../core/services/categoria';
+import { MarcaService } from '../../core/services/marca';
 import { ProdutoService } from '../../core/services/produto';
+import { FORMATO_PRECO, formatarPreco, lerPreco } from '../../shared/utils/preco';
+
+const LIMITE_DESCRICAO = 1000;
+
+interface Caracteristica {
+  nome: string;
+  valor: string;
+}
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
@@ -15,28 +25,34 @@ import { ProdutoService } from '../../core/services/produto';
 export class ProdutoForm {
   private readonly produtoService = inject(ProdutoService);
   private readonly categoriaService = inject(CategoriaService);
+  private readonly marcaService = inject(MarcaService);
   private readonly router = inject(Router);
 
+  // parâmetro :id da rota, vazio durante o cadastro
   readonly id = input<string>();
 
   protected readonly categorias = signal<Categoria[]>([]);
+  protected readonly marcas = signal<Marca[]>([]);
   protected readonly imagens = signal<string[]>([]);
+  private readonly imagensNovas = new Set<string>();
+  protected readonly caracteristicas = signal<Caracteristica[]>([
+    { nome: 'Cor', valor: '' },
+    { nome: 'Material', valor: '' },
+    { nome: 'Tamanho', valor: '' },
+  ]);
+  protected readonly limiteDescricao = LIMITE_DESCRICAO;
   protected readonly salvando = signal(false);
   protected readonly enviandoImagem = signal(false);
   protected readonly erro = signal<string | null>(null);
 
   protected readonly form = inject(FormBuilder).group({
-    nome: ['', [Validators.required, Validators.maxLength(120)]],
-    descricao: [''],
-    marca: [''],
-    categoria_id: [null as number | null],
-    preco: [null as number | null, Validators.min(0)],
-    genero: ['' as Genero | ''],
-    material: [''],
-    formato: [''],
-    cor: [''],
+    nome: ['', [Validators.required, Validators.maxLength(100)]],
+    descricao: ['', Validators.maxLength(LIMITE_DESCRICAO)],
+    categoria_id: [null as string | null],
+    marca_id: [null as string | null],
+    preco: ['', Validators.pattern(FORMATO_PRECO)],
+    estoque: [0, [Validators.required, Validators.min(0)]],
     destaque: [false],
-    ativo: [true],
   });
 
   constructor() {
@@ -44,6 +60,10 @@ export class ProdutoForm {
       .listar()
       .then((c) => this.categorias.set(c))
       .catch((e) => console.error('Erro ao carregar categorias', e));
+    this.marcaService
+      .listar()
+      .then((m) => this.marcas.set(m))
+      .catch((e) => console.error('Erro ao carregar marcas', e));
 
     effect(() => {
       const id = this.id();
@@ -57,8 +77,12 @@ export class ProdutoForm {
       this.erro.set('Produto não encontrado.');
       return;
     }
-    this.form.patchValue({ ...produto, genero: produto.genero ?? '' });
-    this.imagens.set(produto.imagens ?? []);
+    this.form.patchValue({
+      ...produto,
+      preco: formatarPreco(produto.preco),
+    });
+    this.imagens.set(produto.imagens.map((i) => i.url));
+    this.caracteristicas.set(produto.caracteristicas.map(({ nome, valor }) => ({ nome, valor })));
   }
 
   protected async adicionarImagens(evento: Event) {
@@ -70,6 +94,7 @@ export class ProdutoForm {
     try {
       for (const arquivo of arquivos) {
         const url = await this.produtoService.enviarImagem(arquivo);
+        this.imagensNovas.add(url);
         this.imagens.update((lista) => [...lista, url]);
       }
     } catch (e) {
@@ -83,6 +108,30 @@ export class ProdutoForm {
 
   protected removerImagem(url: string) {
     this.imagens.update((lista) => lista.filter((i) => i !== url));
+    if (this.imagensNovas.delete(url)) this.produtoService.descartarImagens([url]);
+  }
+
+  protected moverImagem(indice: number, direcao: -1 | 1) {
+    this.imagens.update((lista) => {
+      const nova = [...lista];
+      [nova[indice], nova[indice + direcao]] = [nova[indice + direcao], nova[indice]];
+      return nova;
+    });
+  }
+
+  protected adicionarCaracteristica() {
+    this.caracteristicas.update((lista) => [...lista, { nome: '', valor: '' }]);
+  }
+
+  protected alterarCaracteristica(indice: number, campo: keyof Caracteristica, evento: Event) {
+    const valor = (evento.target as HTMLInputElement).value;
+    this.caracteristicas.update((lista) =>
+      lista.map((c, i) => (i === indice ? { ...c, [campo]: valor } : c)),
+    );
+  }
+
+  protected removerCaracteristica(indice: number) {
+    this.caracteristicas.update((lista) => lista.filter((_, i) => i !== indice));
   }
 
   protected async salvar() {
@@ -92,31 +141,28 @@ export class ProdutoForm {
     }
 
     const valores = this.form.getRawValue();
-    const vazioParaNull = (v: string | null) => (v?.trim() ? v.trim() : null);
     const produto: ProdutoInput = {
       nome: valores.nome!.trim(),
-      descricao: vazioParaNull(valores.descricao),
-      marca: vazioParaNull(valores.marca),
-      categoria_id: valores.categoria_id ? Number(valores.categoria_id) : null,
-      preco: valores.preco ?? null,
-      genero: valores.genero || null,
-      material: vazioParaNull(valores.material),
-      formato: vazioParaNull(valores.formato),
-      cor: vazioParaNull(valores.cor),
+      descricao: valores.descricao?.trim() || null,
+      categoria_id: valores.categoria_id || null,
+      marca_id: valores.marca_id || null,
+      preco: valores.preco?.trim() ? lerPreco(valores.preco.trim()) : null,
+      estoque: valores.estoque ?? 0,
       destaque: !!valores.destaque,
-      ativo: !!valores.ativo,
-      imagens: this.imagens(),
     };
+    // características sem nome ou valor não são gravadas
+    const caracteristicas = this.caracteristicas()
+      .map((c) => ({ nome: c.nome.trim(), valor: c.valor.trim() }))
+      .filter((c) => c.nome && c.valor);
 
     this.salvando.set(true);
     this.erro.set(null);
     try {
-      const id = this.id();
-      if (id) {
-        await this.produtoService.atualizar(id, produto);
-      } else {
-        await this.produtoService.criar(produto);
-      }
+      await this.produtoService.salvar(this.id(), {
+        produto,
+        imagens: this.imagens(),
+        caracteristicas,
+      });
       await this.router.navigate(['/admin/produtos']);
     } catch (e) {
       console.error(e);

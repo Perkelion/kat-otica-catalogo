@@ -2,20 +2,27 @@
 <h1>{{ id() ? 'Editar produto' : 'Novo produto' }}</h1>
 
 <form class="form" [formGroup]="form" (ngSubmit)="salvar()">
-  <label class="inteiro">
+  <label class="campo inteiro">
     Nome *
-    <input type="text" formControlName="nome" />
+    <input type="text" maxlength="100" formControlName="nome" />
     @if (form.controls.nome.touched && form.controls.nome.invalid) {
-      <small class="erro">Informe o nome do produto.</small>
+      <small class="erro">Informe o nome do produto (até 100 caracteres).</small>
     }
   </label>
 
-  <label class="inteiro">
+  <label class="campo inteiro">
     Descrição
-    <textarea rows="4" formControlName="descricao"></textarea>
+    <textarea rows="4" [attr.maxlength]="limiteDescricao" formControlName="descricao"></textarea>
+    @let tamanho = form.controls.descricao.value?.length ?? 0;
+    <small class="contador" [class.erro]="tamanho > limiteDescricao">
+      {{ tamanho }}/{{ limiteDescricao }}
+      @if (tamanho > limiteDescricao) {
+        — reduza a descrição para salvar
+      }
+    </small>
   </label>
 
-  <label>
+  <label class="campo">
     Categoria
     <select formControlName="categoria_id">
       <option [ngValue]="null">Sem categoria</option>
@@ -25,58 +32,99 @@
     </select>
   </label>
 
-  <label>
+  <label class="campo">
     Marca
-    <input type="text" formControlName="marca" />
-  </label>
-
-  <label>
-    Preço (R$)
-    <input type="number" step="0.01" min="0" formControlName="preco" />
-  </label>
-
-  <label>
-    Gênero
-    <select formControlName="genero">
-      <option value="">Não informado</option>
-      <option value="feminino">Feminino</option>
-      <option value="masculino">Masculino</option>
-      <option value="unissex">Unissex</option>
-      <option value="infantil">Infantil</option>
+    <select formControlName="marca_id">
+      <option [ngValue]="null">Sem marca</option>
+      @for (m of marcas(); track m.id) {
+        <option [ngValue]="m.id">{{ m.nome }}</option>
+      }
     </select>
+    <small>Cadastre novas marcas em <a routerLink="/admin/marcas">Marcas</a>.</small>
   </label>
 
-  <label>
-    Material
-    <input type="text" formControlName="material" placeholder="Ex.: Acetato" />
+  <label class="campo">
+    Preço (R$)
+    <input type="text" inputmode="decimal" placeholder="0,00" formControlName="preco" />
+    @if (form.controls.preco.touched && form.controls.preco.invalid) {
+      <small class="erro">Informe um valor como 159,99.</small>
+    }
   </label>
 
-  <label>
-    Formato
-    <input type="text" formControlName="formato" placeholder="Ex.: Redondo" />
-  </label>
-
-  <label>
-    Cor
-    <input type="text" formControlName="cor" />
+  <label class="campo">
+    Estoque *
+    <input type="number" step="1" min="0" formControlName="estoque" />
+    @if (form.controls.estoque.touched && form.controls.estoque.invalid) {
+      <small class="erro">Informe uma quantidade igual ou maior que zero.</small>
+    }
   </label>
 
   <div class="checks">
     <label class="check"
       ><input type="checkbox" formControlName="destaque" /> Destaque na página inicial</label
     >
-    <label class="check"
-      ><input type="checkbox" formControlName="ativo" /> Visível no catálogo</label
-    >
   </div>
+
+  <fieldset class="inteiro caracteristicas">
+    <legend>Características</legend>
+    @for (c of caracteristicas(); track $index; let i = $index) {
+      <div class="caracteristicas__linha">
+        <input
+          type="text"
+          maxlength="100"
+          placeholder="Nome (ex.: Cor)"
+          aria-label="Nome da característica"
+          [value]="c.nome"
+          (input)="alterarCaracteristica(i, 'nome', $event)"
+        />
+        <input
+          type="text"
+          maxlength="100"
+          placeholder="Valor (ex.: Preto)"
+          aria-label="Valor da característica"
+          [value]="c.valor"
+          (input)="alterarCaracteristica(i, 'valor', $event)"
+        />
+        <button
+          type="button"
+          class="link-perigo"
+          (click)="removerCaracteristica(i)"
+          aria-label="Remover característica"
+        >
+          ×
+        </button>
+      </div>
+    }
+    <button type="button" class="btn btn--secundario" (click)="adicionarCaracteristica()">
+      + Característica
+    </button>
+  </fieldset>
 
   <fieldset class="inteiro imagens">
     <legend>Imagens</legend>
     <div class="imagens__lista">
-      @for (img of imagens(); track img) {
+      @for (img of imagens(); track img; let i = $index, primeira = $first, ultima = $last) {
         <div class="imagens__item">
           <img [src]="img" alt="Imagem do produto" />
           <button type="button" (click)="removerImagem(img)" aria-label="Remover imagem">×</button>
+          <div class="imagens__ordem">
+            <button
+              type="button"
+              [disabled]="primeira"
+              (click)="moverImagem(i, -1)"
+              aria-label="Mover para a esquerda"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              [disabled]="ultima"
+              (click)="moverImagem(i, 1)"
+              aria-label="Mover para a direita"
+            >
+              ›
+            </button>
+          </div>
         </div>
       }
     </div>
@@ -89,6 +137,8 @@
     />
     @if (enviandoImagem()) {
       <small>Enviando imagem...</small>
+    } @else if (imagens().length > 1) {
+      <small>A primeira imagem é a principal do produto.</small>
     }
   </fieldset>
 

@@ -1,22 +1,15 @@
 .form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem 1.5rem;
+  gap: var(--espaco-5);
   background: var(--cor-superficie);
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio);
-  padding: 1.5rem;
+  padding: var(--espaco-6);
 }
 
 .inteiro {
   grid-column: 1 / -1;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  font-weight: 600;
 }
 
 .checks {
@@ -27,15 +20,21 @@ label {
 }
 
 .check {
-  flex-direction: row;
+  display: flex;
   align-items: center;
-  font-weight: 500;
+  gap: var(--espaco-2);
+}
+
+.check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--cor-primaria);
 }
 
 .imagens {
-  border: 1px dashed var(--cor-borda);
-  border-radius: var(--raio);
-  padding: 1rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-sm);
+  padding: var(--espaco-4);
 }
 
 .imagens__lista {
@@ -47,8 +46,8 @@ label {
 
 .imagens__item {
   position: relative;
-  width: 96px;
-  height: 96px;
+  width: 120px;
+  height: 120px;
   border: 1px solid var(--cor-borda);
   border-radius: 8px;
 }
@@ -72,6 +71,59 @@ label {
   cursor: pointer;
 }
 
+.imagens__ordem {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+
+.imagens__ordem button {
+  position: static;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: var(--cor-escura);
+}
+
+.imagens__ordem button:disabled {
+  visibility: hidden;
+}
+
+.caracteristicas {
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-sm);
+  padding: var(--espaco-4);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.caracteristicas__linha {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.caracteristicas__linha input {
+  flex: 1;
+  min-width: 0;
+}
+
+.caracteristicas .link-perigo {
+  padding: 0 var(--espaco-2);
+  font-size: 1.25rem;
+}
+
+legend {
+  padding: 0 var(--espaco-1);
+  font-weight: 600;
+}
+
 .botoes {
   display: flex;
   justify-content: flex-end;
@@ -82,4 +134,9 @@ label {
   .form {
     grid-template-columns: 1fr;
   }
+}
+
+.contador {
+  align-self: flex-end;
+  color: var(--cor-texto-suave);
 }
