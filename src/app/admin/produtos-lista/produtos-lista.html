@@ -3,15 +3,47 @@
   <a routerLink="/admin/produtos/novo" class="btn">+ Novo produto</a>
 </div>
 
-<form class="busca" (submit)="$event.preventDefault(); carregar()">
+<div class="filtros">
   <input
     type="search"
-    placeholder="Buscar por nome, marca..."
+    class="filtros__busca"
+    placeholder="Buscar por nome, descrição ou marca..."
+    aria-label="Buscar produtos"
     [value]="busca()"
-    (input)="busca.set($any($event.target).value)"
+    (input)="busca.set(valor($event))"
   />
-  <button type="submit" class="btn btn--secundario">Buscar</button>
-</form>
+  <select aria-label="Categoria" [value]="categoriaId()" (change)="categoriaId.set(valor($event))">
+    <option value="">Todas as categorias</option>
+    @for (c of categorias(); track c.id) {
+      <option [value]="c.id">{{ c.nome }}</option>
+    }
+  </select>
+  <select aria-label="Marca" [value]="marcaId()" (change)="marcaId.set(valor($event))">
+    <option value="">Todas as marcas</option>
+    @for (m of marcas(); track m.id) {
+      <option [value]="m.id">{{ m.nome }}</option>
+    }
+  </select>
+  <select aria-label="Destaque" [value]="destaque()" (change)="destaque.set($any(valor($event)))">
+    <option value="">Destaque: todos</option>
+    <option value="sim">Só destaques</option>
+    <option value="nao">Sem destaque</option>
+  </select>
+  <select aria-label="Estoque" [value]="estoque()" (change)="estoque.set($any(valor($event)))">
+    <option value="">Estoque: todos</option>
+    <option value="com">Em estoque</option>
+    <option value="sem">Sem estoque</option>
+  </select>
+</div>
+
+@if (!carregando() && !erro()) {
+  <p class="resultado">
+    {{ produtosFiltrados().length }} de {{ produtos().length }} produto(s)
+    @if (temFiltro()) {
+      · <button type="button" class="link" (click)="limparFiltros()">Limpar filtros</button>
+    }
+  </p>
+}
 
 @if (carregando()) {
   <p class="vazio">Carregando...</p>
@@ -26,16 +58,16 @@
           <th>Nome</th>
           <th>Categoria</th>
           <th>Preço</th>
-          <th>Status</th>
+          <th>Estoque</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        @for (p of produtos(); track p.id) {
+        @for (p of produtosFiltrados(); track p.id) {
           <tr>
             <td>
               @if (p.imagens.length) {
-                <img [src]="p.imagens[0]" [alt]="p.nome" class="miniatura" />
+                <img [src]="p.imagens[0].url" [alt]="p.nome" class="miniatura" />
               }
             </td>
             <td>
@@ -44,11 +76,11 @@
                 <span class="tag">Destaque</span>
               }
               <br />
-              <small>{{ p.marca }}</small>
+              <small>{{ p.marca?.nome }}</small>
             </td>
             <td>{{ p.categoria?.nome ?? '-' }}</td>
             <td>{{ p.preco !== null ? (p.preco | currency: 'BRL') : '-' }}</td>
-            <td>{{ p.ativo ? 'Ativo' : 'Inativo' }}</td>
+            <td>{{ p.estoque }}</td>
             <td class="acoes">
               <a [routerLink]="['/admin/produtos', p.id, 'editar']">Editar</a>
               <button type="button" class="link-perigo" (click)="remover(p)">Remover</button>
@@ -56,7 +88,13 @@
           </tr>
         } @empty {
           <tr>
-            <td colspan="6" class="vazio">Nenhum produto cadastrado.</td>
+            <td colspan="6" class="vazio">
+              {{
+                temFiltro()
+                  ? 'Nenhum produto encontrado com esses filtros.'
+                  : 'Nenhum produto cadastrado.'
+              }}
+            </td>
           </tr>
         }
       </tbody>
