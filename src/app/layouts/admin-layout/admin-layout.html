@@ -1,10 +1,17 @@
 <header class="admin-header">
   <div class="container admin-header__conteudo">
-    <strong>Kat Ótica · Gerenciamento</strong>
+    <a routerLink="/admin" class="marca">
+      <span class="marca__icone"><app-icone nome="eyeglass" /></span>
+      <span>Kat Ótica <small>Gerenciamento</small></span>
+    </a>
     <nav>
-      <a routerLink="/admin/produtos" routerLinkActive="ativo">Produtos</a>
-      <a routerLink="/" target="_blank">Ver site</a>
-      <button type="button" class="btn btn--secundario" (click)="sair()">Sair</button>
+      <a routerLink="/admin/produtos" routerLinkActive="ativo">
+        <app-icone nome="package" /> Produtos
+      </a>
+      <a routerLink="/admin/marcas" routerLinkActive="ativo"> <app-icone nome="tags" /> Marcas </a>
+      <span class="divisor" aria-hidden="true"></span>
+      <a routerLink="/" target="_blank"> <app-icone nome="external-link" /> Ver site </a>
+      <button type="button" class="sair" (click)="sair()"><app-icone nome="logout" /> Sair</button>
     </nav>
   </div>
 </header>

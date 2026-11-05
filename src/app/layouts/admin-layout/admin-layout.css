@@ -1,6 +1,6 @@
 .admin-header {
   background: var(--cor-escura);
-  color: #fff;
+  color: var(--cor-superficie);
 }
 
 .admin-header__conteudo {
@@ -8,26 +8,93 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  min-height: 60px;
+  gap: var(--espaco-4);
+  min-height: 64px;
+  padding-block: var(--espaco-2);
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  color: inherit;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.marca__icone {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--raio-sm);
+  background: var(--cor-primaria);
+  font-size: 1.1rem;
+}
+
+.marca small {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--cor-admin-nav);
 }
 
 nav {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  gap: var(--espaco-1);
 }
 
-nav a {
-  color: #d1d5db;
+nav a,
+.sair {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  padding: var(--espaco-2) var(--espaco-3);
+  border: none;
+  border-radius: var(--raio-sm);
+  background: transparent;
+  color: var(--cor-admin-nav);
+  font: inherit;
   text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+nav a:hover,
+.sair:hover {
+  background: rgb(255 255 255 / 0.08);
+  color: var(--cor-superficie);
 }
 
 nav a.ativo {
-  color: #fff;
+  background: rgb(255 255 255 / 0.12);
+  color: var(--cor-superficie);
   font-weight: 600;
 }
 
+.divisor {
+  width: 1px;
+  height: 24px;
+  margin-inline: var(--espaco-2);
+  background: rgb(255 255 255 / 0.15);
+}
+
+.sair:hover {
+  background: rgb(220 38 38 / 0.2);
+  color: #fecaca;
+}
+
 .admin-conteudo {
-  padding-block: 2rem;
+  padding-block: var(--espaco-8);
+}
+
+@media (max-width: 600px) {
+  .divisor {
+    display: none;
+  }
 }
