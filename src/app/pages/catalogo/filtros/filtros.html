@@ -1,0 +1,38 @@
+<aside class="filtros">
+  <label class="campo">
+    Buscar
+    <input
+      type="search"
+      placeholder="Buscar produtos..."
+      [value]="buscaInicial() ?? ''"
+      (input)="atualizar('busca', $event)"
+    />
+  </label>
+
+  <label class="campo">
+    Categoria
+    <select (change)="selecionarCategoria($event)">
+      <option value="">Todas</option>
+      @for (c of categorias(); track c.id) {
+        <option [value]="c.id" [selected]="c.id === categoriaSelecionada()">
+          {{ c.nome }}
+        </option>
+      }
+    </select>
+  </label>
+
+  <label class="campo">
+    Marca
+    <select (change)="selecionarMarca($event)">
+      <option value="">Todas</option>
+      @for (m of marcas(); track m.id) {
+        <option [value]="m.id" [selected]="m.id === marcaSelecionada()">{{ m.nome }}</option>
+      }
+    </select>
+  </label>
+
+  <label class="campo">
+    Cor
+    <input type="text" placeholder="Ex.: Preto" (input)="atualizar('cor', $event)" />
+  </label>
+</aside>

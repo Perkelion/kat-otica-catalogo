@@ -1,6 +1,7 @@
 import { Component, input, output, signal } from '@angular/core';
 import { Categoria } from '../../../core/models/categoria';
-import { FiltrosProduto, Genero } from '../../../core/models/produto';
+import { Marca } from '../../../core/models/marca';
+import { FiltrosProduto } from '../../../core/models/produto';
 
 @Component({
   imports: [],
@@ -10,20 +11,14 @@ import { FiltrosProduto, Genero } from '../../../core/models/produto';
 })
 export class Filtros {
   readonly categorias = input<Categoria[]>([]);
+  readonly marcas = input<Marca[]>([]);
   readonly categoriaSelecionada = input<string | undefined>();
+  readonly marcaSelecionada = input<string | undefined>();
   readonly buscaInicial = input<string | undefined>();
 
   readonly filtrosChange = output<FiltrosProduto>();
   readonly categoriaChange = output<string | undefined>();
-
-  protected readonly generos: { valor: Genero; rotulo: string }[] = [
-    { valor: 'feminino', rotulo: 'Feminino' },
-    { valor: 'masculino', rotulo: 'Masculino' },
-    { valor: 'unissex', rotulo: 'Unissex' },
-    { valor: 'infantil', rotulo: 'Infantil' },
-  ];
-  protected readonly materiais = ['Acetato', 'Metal', 'TR90', 'Titânio'];
-  protected readonly formatos = ['Redondo', 'Quadrado', 'Retangular', 'Gatinho', 'Aviador'];
+  readonly marcaChange = output<string | undefined>();
 
   private readonly filtros = signal<FiltrosProduto>({});
 
@@ -34,7 +29,12 @@ export class Filtros {
   }
 
   protected selecionarCategoria(evento: Event) {
-    const slug = (evento.target as HTMLSelectElement).value;
-    this.categoriaChange.emit(slug || undefined);
+    const id = (evento.target as HTMLSelectElement).value;
+    this.categoriaChange.emit(id || undefined);
+  }
+
+  protected selecionarMarca(evento: Event) {
+    const id = (evento.target as HTMLSelectElement).value;
+    this.marcaChange.emit(id || undefined);
   }
 }

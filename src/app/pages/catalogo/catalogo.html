@@ -4,10 +4,13 @@
   <div class="catalogo">
     <app-filtros
       [categorias]="categorias()"
+      [marcas]="marcas()"
       [categoriaSelecionada]="categoria()"
+      [marcaSelecionada]="marca()"
       [buscaInicial]="busca()"
       (filtrosChange)="filtros.set($event)"
       (categoriaChange)="selecionarCategoria($event)"
+      (marcaChange)="selecionarMarca($event)"
     />
 
     <section>
@@ -18,12 +21,44 @@
       } @else {
         <p class="resultado">{{ produtos().length }} produto(s) encontrado(s)</p>
         <div class="grid-produtos">
-          @for (p of produtos(); track p.id) {
+          @for (p of produtosDaPagina(); track p.id) {
             <app-produto-card [produto]="p" />
           } @empty {
             <p class="vazio">Nenhum produto encontrado com os filtros selecionados.</p>
           }
         </div>
+
+        @if (totalPaginas() > 1) {
+          <nav class="paginacao" aria-label="Paginação">
+            <button
+              type="button"
+              class="btn btn--secundario"
+              [disabled]="pagina() === 1"
+              (click)="irParaPagina(pagina() - 1)"
+            >
+              ‹ Anterior
+            </button>
+            @for (n of paginas(); track n) {
+              <button
+                type="button"
+                class="btn"
+                [class.btn--secundario]="n !== pagina()"
+                [attr.aria-current]="n === pagina() ? 'page' : null"
+                (click)="irParaPagina(n)"
+              >
+                {{ n }}
+              </button>
+            }
+            <button
+              type="button"
+              class="btn btn--secundario"
+              [disabled]="pagina() === totalPaginas()"
+              (click)="irParaPagina(pagina() + 1)"
+            >
+              Próxima ›
+            </button>
+          </nav>
+        }
       }
     </section>
   </div>
