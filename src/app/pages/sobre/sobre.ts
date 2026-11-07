@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
   imports: [],
@@ -6,4 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './sobre.css',
   templateUrl: './sobre.html',
 })
-export class Sobre {}
+export class Sobre {
+  protected readonly contato = environment;
+  protected readonly linkWhatsapp = `https://wa.me/${environment.whatsapp}`;
+}

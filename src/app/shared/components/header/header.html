@@ -12,13 +12,18 @@
       ☰
     </button>
 
-    <nav class="header__nav" [class.aberto]="menuAberto()" (click)="menuAberto.set(false)">
-      <a routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }"
+    <nav class="header__nav" [class.aberto]="menuAberto()">
+      <a
+        routerLink="/"
+        routerLinkActive="ativo"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="menuAberto.set(false)"
         >Início</a
       >
-      <a routerLink="/catalogo" routerLinkActive="ativo">Catálogo</a>
-      <a routerLink="/sobre" routerLinkActive="ativo">Sobre</a>
-      <a routerLink="/contato" routerLinkActive="ativo">Contato</a>
+      <a routerLink="/catalogo" routerLinkActive="ativo" (click)="menuAberto.set(false)"
+        >Catálogo</a
+      >
+      <a routerLink="/sobre" routerLinkActive="ativo" (click)="menuAberto.set(false)">Sobre</a>
     </nav>
   </div>
 </header>

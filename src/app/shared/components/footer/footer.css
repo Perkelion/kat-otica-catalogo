@@ -1,8 +1,8 @@
 .footer {
   background: var(--cor-escura);
-  color: #e5e7eb;
-  margin-top: 4rem;
-  padding-top: 2.5rem;
+  color: var(--cor-rodape-titulo);
+  margin-top: var(--espaco-16);
+  padding-top: var(--espaco-10);
 }
 
 .footer__grid {
@@ -13,17 +13,17 @@
 
 .footer p {
   margin: 0.4rem 0;
-  color: #9ca3af;
+  color: var(--cor-rodape-texto);
 }
 
 .footer a {
-  color: #9ca3af;
+  color: var(--cor-rodape-texto);
 }
 
-.footer__copy {
+.footer .footer__copy {
   text-align: center;
-  border-top: 1px solid #374151;
-  margin-top: 2rem;
+  border-top: 1px solid var(--cor-rodape-borda);
+  margin: 2rem 0 0;
   padding: 1rem;
   font-size: 0.85rem;
 }

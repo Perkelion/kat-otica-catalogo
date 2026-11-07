@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth-guard';
-import { AdminLayout } from './layouts/admin-layout/admin-layout';
 import { PublicLayout } from './layouts/public-layout/public-layout';
 
 export const routes: Routes = [
@@ -26,13 +25,8 @@ export const routes: Routes = [
       },
       {
         path: 'sobre',
-        title: 'Sobre | Kat Ótica',
+        title: 'Sobre e contato | Kat Ótica',
         loadComponent: () => import('./pages/sobre/sobre').then((m) => m.Sobre),
-      },
-      {
-        path: 'contato',
-        title: 'Contato | Kat Ótica',
-        loadComponent: () => import('./pages/contato/contato').then((m) => m.Contato),
       },
     ],
   },
@@ -44,7 +38,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    component: AdminLayout,
+    loadComponent: () => import('./layouts/admin-layout/admin-layout').then((m) => m.AdminLayout),
     canActivate: [authGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'produtos' },
@@ -63,6 +57,11 @@ export const routes: Routes = [
         path: 'produtos/:id/editar',
         title: 'Editar produto | Admin',
         loadComponent: () => import('./admin/produto-form/produto-form').then((m) => m.ProdutoForm),
+      },
+      {
+        path: 'marcas',
+        title: 'Marcas | Admin',
+        loadComponent: () => import('./admin/marcas/marcas').then((m) => m.Marcas),
       },
     ],
   },

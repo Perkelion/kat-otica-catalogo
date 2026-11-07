@@ -1,10 +1,30 @@
-<div class="container secao texto">
-  <h1>Sobre a Kat Ótica</h1>
-  <p>
-    A Kat Ótica é uma ótica familiar da região, dedicada a oferecer atendimento próximo e produtos
-    de qualidade para toda a família.
-  </p>
-  <p>
-    Aqui você encontra armações de grau, óculos de sol, lentes e acessórios.
-  </p>
+<div class="container secao">
+  <div class="texto">
+    <h1>Sobre a Kat Ótica</h1>
+    <p>
+      A Kat Ótica é uma ótica familiar da região, dedicada a oferecer atendimento próximo e produtos
+      de qualidade para toda a família.
+    </p>
+    <p>Aqui você encontra armações de grau, óculos de sol, lentes e acessórios.</p>
+  </div>
+
+  <h2 id="contato">Contato</h2>
+  <div class="contatos">
+    <div class="contato">
+      <strong>WhatsApp</strong>
+      <a [href]="linkWhatsapp" target="_blank" rel="noopener">Enviar mensagem</a>
+    </div>
+    <div class="contato">
+      <strong>Telefone</strong>
+      <span>{{ contato.telefone }}</span>
+    </div>
+    <div class="contato">
+      <strong>E-mail</strong>
+      <a [href]="'mailto:' + contato.email">{{ contato.email }}</a>
+    </div>
+    <div class="contato">
+      <strong>Endereço</strong>
+      <span>{{ contato.endereco }}</span>
+    </div>
+  </div>
 </div>
