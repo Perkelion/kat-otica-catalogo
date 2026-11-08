@@ -8,20 +8,20 @@
       <div class="galeria">
         <div class="galeria__principal">
           @if (p.imagens.length) {
-            <img [src]="p.imagens[imagemAtual()]" [alt]="p.nome" />
+            <img [src]="p.imagens[imagemAtual()].url" [alt]="p.nome" />
           } @else {
             <span>Sem imagem</span>
           }
         </div>
         @if (p.imagens.length > 1) {
           <div class="galeria__miniaturas">
-            @for (img of p.imagens; track img; let i = $index) {
+            @for (img of p.imagens; track img.id; let i = $index) {
               <button
                 type="button"
                 [class.ativa]="i === imagemAtual()"
                 (click)="imagemAtual.set(i)"
               >
-                <img [src]="img" [alt]="p.nome + ' - imagem ' + (i + 1)" />
+                <img [src]="img.url" [alt]="p.nome + ' - imagem ' + (i + 1)" />
               </button>
             }
           </div>
@@ -33,6 +33,14 @@
           <small>{{ p.categoria.nome }}</small>
         }
         <h1>{{ p.nome }}</h1>
+        @if (p.marca) {
+          <a class="marca" [routerLink]="['/catalogo']" [queryParams]="{ marca: p.marca.id }">
+            @if (p.marca.logo_url) {
+              <img [src]="p.marca.logo_url" alt="" />
+            }
+            {{ p.marca.nome }}
+          </a>
+        }
         @if (p.preco !== null) {
           <p class="preco">{{ p.preco | currency: 'BRL' }}</p>
         }
@@ -41,27 +49,19 @@
         }
 
         <dl class="caracteristicas">
-          @if (p.marca) {
-            <dt>Marca</dt>
-            <dd>{{ p.marca }}</dd>
+          @for (c of p.caracteristicas; track c.id) {
+            <dt>{{ c.nome }}</dt>
+            <dd>{{ c.valor }}</dd>
           }
-          @if (p.genero) {
-            <dt>Gênero</dt>
-            <dd class="capitalizar">{{ p.genero }}</dd>
-          }
-          @if (p.material) {
-            <dt>Material</dt>
-            <dd>{{ p.material }}</dd>
-          }
-          @if (p.formato) {
-            <dt>Formato</dt>
-            <dd>{{ p.formato }}</dd>
-          }
-          @if (p.cor) {
-            <dt>Cor</dt>
-            <dd>{{ p.cor }}</dd>
+          @if (p.categoria) {
+            <dt>Categoria</dt>
+            <dd>{{ p.categoria.nome }}</dd>
           }
         </dl>
+
+        <p class="disponibilidade" [class.esgotado]="p.estoque <= 0">
+          Disponibilidade: {{ p.estoque > 0 ? 'Em estoque' : 'Indisponível' }}
+        </p>
 
         <a class="btn" [href]="linkWhatsapp()" target="_blank" rel="noopener">
           Tenho interesse (WhatsApp)

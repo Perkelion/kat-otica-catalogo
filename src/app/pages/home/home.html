@@ -11,7 +11,7 @@
     <h2>Categorias</h2>
     <div class="categorias">
       @for (c of categorias(); track c.id) {
-        <a [routerLink]="['/catalogo']" [queryParams]="{ categoria: c.slug }" class="categoria">
+        <a [routerLink]="['/catalogo']" [queryParams]="{ categoria: c.id }" class="categoria">
           {{ c.nome }}
         </a>
       }
@@ -31,3 +31,25 @@
     <p class="vazio">Em breve novos produtos em destaque.</p>
   }
 </section>
+
+@if (marcas().length) {
+  <section class="container secao">
+    <h2>Nossas marcas</h2>
+    <div class="marcas">
+      @for (m of marcas(); track m.id) {
+        <a
+          [routerLink]="['/catalogo']"
+          [queryParams]="{ marca: m.id }"
+          class="marca"
+          [attr.aria-label]="'Ver produtos ' + m.nome"
+        >
+          @if (m.logo_url) {
+            <img [src]="m.logo_url" [alt]="m.nome" loading="lazy" />
+          } @else {
+            <span>{{ m.nome }}</span>
+          }
+        </a>
+      }
+    </div>
+  </section>
+}

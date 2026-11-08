@@ -6,11 +6,12 @@
 .detalhe {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
+  gap: var(--espaco-10);
+  align-items: start;
 }
 
 .galeria__principal {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1;
   background: var(--cor-superficie);
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio);
@@ -27,14 +28,14 @@
 
 .galeria__miniaturas {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
+  gap: var(--espaco-3);
+  margin-top: var(--espaco-3);
   overflow-x: auto;
 }
 
 .galeria__miniaturas button {
-  width: 72px;
-  height: 72px;
+  width: 80px;
+  height: 80px;
   padding: 0;
   border: 2px solid var(--cor-borda);
   border-radius: 8px;
@@ -54,9 +55,9 @@
 }
 
 .info small {
-  color: var(--cor-primaria);
+  color: var(--cor-texto-suave);
   text-transform: uppercase;
-  font-weight: 600;
+  font: var(--texto-sobretitulo);
 }
 
 .info h1 {
@@ -72,11 +73,18 @@
 .caracteristicas {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0.5rem 1.5rem;
-  margin: 1.5rem 0 2rem;
+  column-gap: var(--espaco-4);
+  margin: var(--espaco-6) 0;
+}
+
+.caracteristicas dt,
+.caracteristicas dd {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--cor-borda);
 }
 
 .caracteristicas dt {
+  min-width: 160px;
   font-weight: 600;
 }
 
@@ -85,8 +93,33 @@
   color: var(--cor-texto-suave);
 }
 
-.capitalizar {
-  text-transform: capitalize;
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  margin: -0.5rem 0 0;
+  font-size: 1.125rem;
+  color: var(--cor-texto-suave);
+  text-decoration: none;
+}
+
+.marca:hover {
+  color: var(--cor-primaria);
+}
+
+.marca img {
+  height: 32px;
+  max-width: 96px;
+  object-fit: contain;
+}
+
+.disponibilidade {
+  font-weight: 600;
+  color: var(--cor-primaria);
+}
+
+.disponibilidade.esgotado {
+  color: var(--cor-perigo);
 }
 
 @media (max-width: 768px) {
