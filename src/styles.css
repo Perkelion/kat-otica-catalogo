@@ -8,7 +8,30 @@
   --cor-texto: #111827;
   --cor-texto-suave: #6b7280;
   --cor-perigo: #dc2626;
+  --cor-rodape-texto: #9ca3af;
+  --cor-rodape-titulo: #e5e7eb;
+  --cor-rodape-borda: #374151;
+  --cor-admin-nav: #d1d5db;
+
+  --espaco-1: 4px;
+  --espaco-2: 8px;
+  --espaco-3: 12px;
+  --espaco-4: 16px;
+  --espaco-5: 20px;
+  --espaco-6: 24px;
+  --espaco-8: 32px;
+  --espaco-10: 40px;
+  --espaco-16: 64px;
+  --raio-sm: 8px;
   --raio: 12px;
+  --raio-full: 999px;
+
+  --fonte: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --texto-h1: 700 2rem/1.25 var(--fonte);
+  --texto-h2: 700 1.5rem/1.25 var(--fonte);
+  --texto-rotulo: 600 0.875rem/1.4 var(--fonte);
+  --texto-pequeno: 400 0.875rem/1.5 var(--fonte);
+  --texto-sobretitulo: 600 0.75rem/1.4 var(--fonte);
 }
 
 *,
@@ -19,14 +42,18 @@
 
 body {
   margin: 0;
-  font-family:
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
+  font-family: var(--fonte);
+  line-height: 1.5;
   background: var(--cor-fundo);
   color: var(--cor-texto);
+}
+
+h1 {
+  font: var(--texto-h1);
+}
+
+h2 {
+  font: var(--texto-h2);
 }
 
 img {
@@ -41,10 +68,10 @@ input,
 select,
 textarea {
   font: inherit;
-  padding: 0.6rem 0.75rem;
+  padding: 10px var(--espaco-3);
   border: 1px solid var(--cor-borda);
-  border-radius: 8px;
-  background: #fff;
+  border-radius: var(--raio-sm);
+  background: var(--cor-superficie);
 }
 
 input:focus,
@@ -58,20 +85,20 @@ textarea:focus {
   width: 100%;
   max-width: 1200px;
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-inline: var(--espaco-4);
 }
 
 .secao {
-  padding-block: 2.5rem;
+  padding-block: var(--espaco-10);
 }
 
 .btn {
   display: inline-block;
-  padding: 0.7rem 1.4rem;
+  padding: var(--espaco-3) var(--espaco-6);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--raio-sm);
   background: var(--cor-primaria);
-  color: #fff;
+  color: var(--cor-superficie);
   font: inherit;
   font-weight: 600;
   text-align: center;
@@ -101,15 +128,60 @@ textarea:focus {
 .grid-produtos {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.25rem;
+  gap: var(--espaco-5);
 }
 
 .vazio {
   color: var(--cor-texto-suave);
   text-align: center;
-  padding: 2rem 0;
+  padding: var(--espaco-8) 0;
 }
 
 .erro {
   color: var(--cor-perigo);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font: var(--texto-rotulo);
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  font: 400 1rem/1.5 var(--fonte);
+}
+
+.campo small {
+  font: var(--texto-pequeno);
+  color: var(--cor-texto-suave);
+}
+
+.campo small.erro {
+  color: var(--cor-perigo);
+}
+
+.tag {
+  display: inline-block;
+  padding: 2px var(--espaco-2);
+  border-radius: var(--raio-full);
+  background: var(--cor-primaria);
+  color: var(--cor-superficie);
+  font: 500 0.6875rem/1.4 var(--fonte);
+}
+
+.link-perigo {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--cor-perigo);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.link-perigo:hover {
+  text-decoration: underline;
 }
