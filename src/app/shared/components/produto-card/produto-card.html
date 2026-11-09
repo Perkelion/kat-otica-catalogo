@@ -2,7 +2,7 @@
 <a class="card" [routerLink]="['/produto', p.id]">
   <div class="card__imagem">
     @if (p.imagens.length) {
-      <img [src]="p.imagens[0]" [alt]="p.nome" loading="lazy" />
+      <img [src]="p.imagens[0].url" [alt]="p.nome" loading="lazy" />
     } @else {
       <span>Sem imagem</span>
     }
@@ -13,7 +13,7 @@
     }
     <h3>{{ p.nome }}</h3>
     @if (p.marca) {
-      <p>{{ p.marca }}</p>
+      <p>{{ p.marca.nome }}</p>
     }
     @if (p.preco !== null) {
       <strong>{{ p.preco | currency: 'BRL' }}</strong>
