@@ -5,10 +5,10 @@ Catálogo virtual da Kat Ótica, desenvolvido com **Angular** e **Supabase** (ba
 ## Funcionalidades
 
 - Página inicial com categorias e produtos em destaque
-- Catálogo com busca e filtros (categoria, gênero, material, formato e marca)
-- Página de detalhes do produto com galeria de imagens e botão de contato pelo WhatsApp
-- Páginas "Sobre" e "Contato"
-- Área de gerenciamento (`/admin`) com login e CRUD de produtos e envio de imagens
+- Catálogo com busca e filtros (categoria, marca e cor)
+- Página de detalhes do produto com galeria de imagens, características, disponibilidade em estoque e botão de contato pelo WhatsApp
+- Página "Sobre" com os contatos da ótica (WhatsApp, telefone, e-mail e endereço)
+- Área de gerenciamento (`/admin`) com login, CRUD de produtos (imagens e características) e cadastro de marcas
 - Layout responsivo (computador, tablet e smartphone)
 
 ## Estrutura
@@ -18,33 +18,17 @@ src/
 ├── environments/          # environment.example.ts: modelo com URL/chave do Supabase e contatos da ótica
 └── app/
     ├── core/
-    │   ├── models/        # Interfaces: Produto, Categoria, filtros
-    │   ├── services/      # SupabaseService, ProdutoService, CategoriaService, AuthService
+    │   ├── models/        # Interfaces: Produto, Categoria, Marca, imagens, características, filtros
+    │   ├── services/      # SupabaseService, ProdutoService, CategoriaService, MarcaService, AuthService
     │   └── guards/        # authGuard (protege a área /admin)
-    ├── shared/components/ # header, footer, produto-card, filtros
+    ├── shared/components/ # header, footer, produto-card, icone
     ├── layouts/           # public-layout (site) e admin-layout (gerenciamento)
-    ├── pages/             # home, catalogo, produto-detalhe, sobre, contato, not-found
-    └── admin/             # login, produtos-lista, produto-form
+    ├── pages/             # home, catalogo (com o componente de filtros), produto-detalhe, sobre, not-found
+    └── admin/             # login, produtos-lista, produto-form, marcas
 supabase/
-└── schema.sql             # Tabelas, regras de segurança (RLS), bucket de imagens e categorias iniciais
+└── schema.sql             # Tabelas (categorias, marcas, produtos, imagens_produto, caracteristicas_produto),
+                           # regras de segurança (RLS), bucket de imagens e categorias iniciais
 ```
-
-## Configuração do Supabase
-
-1. Crie um projeto em <https://supabase.com>.
-2. Em **SQL Editor**, execute o conteúdo de `supabase/schema.sql`.
-3. Em **Authentication → Users**, crie o usuário (e-mail e senha) que a ótica usará para entrar no `/admin`.
-4. Crie os arquivos de configuração a partir do modelo (eles não são versionados):
-
-   ```bash
-   cp src/environments/environment.example.ts src/environments/environment.ts
-   cp src/environments/environment.example.ts src/environments/environment.development.ts
-   ```
-
-   Em `environment.development.ts`, troque `production: true` por `production: false`.
-5. Em **Project Settings → API**, copie a *Project URL* e a *anon public key* para os dois arquivos.
-   Nunca use a chave `service_role` aqui: estes valores vão para o navegador.
-6. Nos mesmos arquivos, preencha WhatsApp, telefone, e-mail, endereço e Instagram da ótica.
 
 ## Comandos
 
